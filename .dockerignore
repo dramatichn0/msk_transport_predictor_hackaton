@@ -1,0 +1,10 @@
+.git
+__pycache__
+*.py[cod]
+*.db
+models-test
+.pytest_cache
+tests
+docs
+.venv
+dataset/ndtp-telemetry-emulator.tar

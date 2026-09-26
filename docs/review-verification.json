@@ -1,0 +1,40 @@
+{
+  "dependencies": {
+    "catboost": false,
+    "torch": false
+  },
+  "holdout": {
+    "samples": 4434,
+    "train_samples": 3494,
+    "holdout_samples": 887,
+    "purged_samples": 53,
+    "validation_mae_seconds": 105.36848085467088,
+    "baseline_mae_seconds": 100.7406997680664,
+    "validation_auc": 0.7937708722476935,
+    "validation_brier": 0.20447004764333127
+  },
+  "reload_equal": true,
+  "validate_replay_baseline": {
+    "split": "validate",
+    "ingested": 103018,
+    "rejected": 0,
+    "skipped": 2927,
+    "seconds": 180.606,
+    "metrics": {
+      "packets": 105945,
+      "invalid": 16849,
+      "unknown_vehicles": 14839,
+      "predictions": 60334,
+      "ml_fallbacks": 0,
+      "out_of_order": 2927,
+      "evicted": 0
+    },
+    "state_vehicles": 30,
+    "scheduled_state_vehicles": 13
+  },
+  "notes": [
+    "In-process ASGI HTTP transport, not Docker or network latency benchmark.",
+    "Holdout metric evaluates the exact ensemble; validate has no ground truth.",
+    "Temp artifacts removed; active models are not changed."
+  ]
+}

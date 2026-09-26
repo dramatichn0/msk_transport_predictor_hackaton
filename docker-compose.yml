@@ -1,0 +1,34 @@
+services:
+  ml:
+    build:
+      context: .
+      dockerfile: ml_service/Dockerfile
+    ports:
+      - "127.0.0.1:8001:8001"
+    environment:
+      OMP_NUM_THREADS: "2"
+    restart: unless-stopped
+    volumes:
+      # Use the project artifacts; a named volume would hide ./models.
+      - ./models:/app/models
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8001/health')"]
+      interval: 15s
+      timeout: 3s
+      retries: 5
+  backend:
+    build:
+      context: .
+      dockerfile: backend/Dockerfile
+    ports:
+      - "127.0.0.1:8000:8000"
+      - "127.0.0.1:9201:9201"
+    environment:
+      NDTP_HOST: "0.0.0.0"
+      NDTP_PORT: "9201"
+    restart: unless-stopped
+    depends_on:
+      ml:
+        condition: service_healthy
+    volumes:
+      - ./dataset:/app/dataset:ro
