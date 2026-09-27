@@ -645,6 +645,7 @@ def _prepare(packet: Telemetry) -> tuple[dict[str, Any], tuple | None]:
                     metrics["measured_error_count"] += len(errors)
                 incidents.append({
                     "tr_id": key, "target_stop_id": match["stop_id"],
+                    "speed": row["speed"],
                     "actual_delay_seconds": round(actual_delay, 2),
                     "absolute_error_seconds": round(errors[-1], 2),
                     "mean_absolute_error_seconds": round(sum(errors) / len(errors), 2),
@@ -796,6 +797,7 @@ def _store_prediction(queued: tuple, output: PredictionOutput) -> dict[str, Any]
             forecast["absolute_error_seconds"] = None
         if risk in {"high", "medium"}:
             incidents.append({"tr_id": key, **forecast, "updated_at": row["event_time"],
+                              "speed": row["speed"],
                               "position": {"lat": row["lat"], "lon": row["lon"]}})
     return forecast
 
