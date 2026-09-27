@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Python: module ml_service.app.main</title>
+</head><body>
+
+<table class="heading">
+<tr class="heading-text decor">
+<td class="title">&nbsp;<br><strong class="title"><a href="ml_service.html" class="white">ml_service</a>.<a href="ml_service.app.html" class="white">app</a>.main</strong></td>
+<td class="extra"><a href=".">index</a></td></tr></table>
+    <p><span class="code">Independent&nbsp;ML&nbsp;inference&nbsp;and&nbsp;atomically&nbsp;published&nbsp;retraining&nbsp;API.</span></p>
+<p>
+<table class="section">
+<tr class="decor pkg-content-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Modules</strong></td></tr>
+    
+<tr><td class="decor pkg-content-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><table><tr><td class="multicolumn"><a href="bisect.html">bisect</a><br>
+<a href="csv.html">csv</a><br>
+</td><td class="multicolumn"><a href="logging.html">logging</a><br>
+<a href="math.html">math</a><br>
+</td><td class="multicolumn"><a href="numpy.html">numpy</a><br>
+<a href="os.html">os</a><br>
+</td><td class="multicolumn"><a href="threading.html">threading</a><br>
+<a href="uuid.html">uuid</a><br>
+</td></tr></table></td></tr></table><p>
+<table class="section">
+<tr class="decor functions-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Functions</strong></td></tr>
+    
+<tr><td class="decor functions-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><dl><dt><a name="-backend_project"><strong>backend_project</strong></a>(lat: 'float', lon: 'float', start: 'dict[str, float]', end: 'dict[str, float]') -&gt; 'tuple[float, float, float]'</dt><dd><span class="code">Project&nbsp;a&nbsp;point&nbsp;onto&nbsp;a&nbsp;local&nbsp;straight&nbsp;segment&nbsp;in&nbsp;metres.</span></dd></dl>
+ <dl><dt><a name="-dataset_rows"><strong>dataset_rows</strong></a>(split: 'str' = 'train') -&gt; 'list[dict[str, Any]]'</dt><dd><span class="code">Join&nbsp;labels&nbsp;to&nbsp;causal&nbsp;telemetry&nbsp;and&nbsp;planned&nbsp;route&nbsp;features&nbsp;for&nbsp;one&nbsp;labeled&nbsp;split.</span></dd></dl>
+ <dl><dt><a name="-export_onnx_artifact"><strong>export_onnx_artifact</strong></a>(bundle: 'dict[str, Any]', activate: 'bool' = False) -&gt; 'dict[str, Any]'</dt><dd><span class="code">Export&nbsp;the&nbsp;tabular&nbsp;LightGBM&nbsp;regressor&nbsp;to&nbsp;ONNX,&nbsp;quantize&nbsp;when&nbsp;supported,&nbsp;and&nbsp;verify&nbsp;parity.<br>
+&nbsp;<br>
+TensorRT&nbsp;is&nbsp;opportunistic:&nbsp;on&nbsp;CPU-only&nbsp;hosts&nbsp;ONNX&nbsp;Runtime&nbsp;CPU&nbsp;is&nbsp;used.&nbsp;Tree<br>
+ensembles&nbsp;do&nbsp;not&nbsp;generally&nbsp;benefit&nbsp;from&nbsp;dynamic&nbsp;int8&nbsp;quantization,&nbsp;so&nbsp;the<br>
+exporter&nbsp;retains&nbsp;a&nbsp;quantized&nbsp;file&nbsp;only&nbsp;when&nbsp;its&nbsp;runtime&nbsp;parity&nbsp;check&nbsp;passes.</span></dd></dl>
+ <dl><dt>async <a name="-health"><strong>health</strong></a>() -&gt; 'dict[str, Any]'</dt><dd><span class="code">Return&nbsp;ML&nbsp;service&nbsp;health&nbsp;and&nbsp;active&nbsp;model&nbsp;name.</span></dd></dl>
+ <dl><dt><a name="-lifespan"><strong>lifespan</strong></a>(application: 'FastAPI') -&gt; 'AsyncIterator[None]'</dt><dd><span class="code">Load&nbsp;a&nbsp;trusted&nbsp;local&nbsp;artifact&nbsp;once,&nbsp;without&nbsp;import-time&nbsp;filesystem&nbsp;writes.</span></dd></dl>
+ <dl><dt><a name="-load_onnx_artifact"><strong>load_onnx_artifact</strong></a>(bundle: 'dict[str, Any]') -&gt; 'dict[str, Any]'</dt><dd><span class="code">Load&nbsp;and&nbsp;parity-check&nbsp;the&nbsp;already&nbsp;exported&nbsp;ONNX&nbsp;file&nbsp;without&nbsp;re-exporting&nbsp;it.</span></dd></dl>
+ <dl><dt><a name="-predict"><strong>predict</strong></a>(data: 'PredictionInput') -&gt; 'PredictionOutput'</dt><dd><span class="code">Predict&nbsp;regression&nbsp;delay&nbsp;and&nbsp;a&nbsp;real&nbsp;classifier&nbsp;probability&nbsp;for&nbsp;one&nbsp;target&nbsp;stop.</span></dd></dl>
+ <dl><dt><a name="-predict_batch"><strong>predict_batch</strong></a>(batch: 'BatchPredictionInput') -&gt; 'BatchPredictionOutput'</dt><dd><span class="code">Vectorize&nbsp;a&nbsp;bounded&nbsp;batch&nbsp;against&nbsp;one&nbsp;immutable&nbsp;model&nbsp;snapshot.</span></dd></dl>
+ <dl><dt><a name="-predict_endpoint"><strong>predict_endpoint</strong></a>(data: 'PredictionInput') -&gt; 'PredictionOutput'</dt><dd><span class="code">Validate&nbsp;and&nbsp;predict&nbsp;one&nbsp;strict-horizon&nbsp;request.</span></dd></dl>
+ <dl><dt><a name="-startup"><strong>startup</strong></a>() -&gt; 'None'</dt><dd><span class="code">Load&nbsp;only&nbsp;compatible&nbsp;artifacts&nbsp;from&nbsp;the&nbsp;trusted&nbsp;model&nbsp;volume.</span></dd></dl>
+ <dl><dt><a name="-train"><strong>train</strong></a>(payload: 'dict[str, str]') -&gt; 'dict[str, Any]'</dt><dd><span class="code">Fit&nbsp;an&nbsp;estimator&nbsp;from&nbsp;a&nbsp;labels&nbsp;CSV&nbsp;within&nbsp;the&nbsp;mounted&nbsp;dataset.</span></dd></dl>
+ <dl><dt><a name="-train_dataset"><strong>train_dataset</strong></a>() -&gt; 'dict[str, Any]'</dt><dd><span class="code">Train&nbsp;on&nbsp;causal&nbsp;telemetry&nbsp;joins&nbsp;without&nbsp;blocking&nbsp;the&nbsp;ASGI&nbsp;event&nbsp;loop.</span></dd></dl>
+</td></tr></table><p>
+<table class="section">
+<tr class="decor data-decor heading-text">
+<td class="section-title" colspan=3>&nbsp;<br><strong class="bigsection">Data</strong></td></tr>
+    
+<tr><td class="decor data-decor"><span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span></td><td>&nbsp;</td>
+<td class="singlecolumn"><strong>AsyncIterator</strong> = typing.AsyncIterator<br>
+<strong>DATASET_DIR</strong> = WindowsPath('I:/Important/Work/msk_transport_predictor_hackaton/dataset')<br>
+<strong>FEATURES</strong> = ['cur_dev_s', 'speed', 'speed_delta', 'speed_mean', 'heading', 'hour', 'weekday', 'rush_hour', 'target_minutes', 'lat', 'lon', 'stop_distance_m', 'target_stop_lat', 'target_stop_lon', 'target_stop_index', 'route_stop_count', 'target_progress', 'target_hour', 'target_minute', 'segment_index', ...]<br>
+<strong>LOG</strong> = &lt;Logger transit.ml (WARNING)&gt;<br>
+<strong>MODEL_DIR</strong> = WindowsPath('I:/Important/Work/msk_transport_predictor_hackaton/models')<br>
+<strong>MODEL_PATH</strong> = WindowsPath('I:/Important/Work/msk_transport_predictor_hackaton/models/delay_model.joblib')<br>
+<strong>PROJECT</strong> = WindowsPath('I:/Important/Work/msk_transport_predictor_hackaton')<br>
+<strong>__annotations__</strong> = {'model': 'dict[str, Any] | None', 'onnx_input_name': 'str | None', 'onnx_session': 'Any'}<br>
+<strong>app</strong> = &lt;fastapi.applications.FastAPI object&gt;<br>
+<strong>backend_name</strong> = 'cur_dev_baseline'<br>
+<strong>inference_provider</strong> = 'python'<br>
+<strong>model</strong> = None<br>
+<strong>onnx_input_name</strong> = None<br>
+<strong>onnx_session</strong> = None<br>
+<strong>training_lock</strong> = &lt;unlocked _thread.lock object&gt;</td></tr></table>
+</body></html>
