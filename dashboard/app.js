@@ -6,6 +6,7 @@ const finite = value => typeof value === "number" && Number.isFinite(value);
 const validPosition = vehicle => vehicle.location_valid && finite(vehicle.lat) && finite(vehicle.lon);
 const probabilityText = value => finite(value) ? `${Math.round(value * 100)}%` : "неизвестно";
 const delayText = value => finite(value) ? `${value} мин` : "нет прогноза";
+const speedText = value => finite(value) ? `${Number(value).toFixed(1)} км/ч` : "неизвестна";
 let map, routeSource, vehicleSource, incidentSource, refreshing = false, didZoom = false;
 
 function textElement(tag, text, className) {
@@ -19,6 +20,7 @@ function vehicleCard(vehicle) {
     const card = textElement("div", "", "item");
     card.append(textElement("b", vehicle.tr_id || vehicle.unit_id || "Неизвестное ТС"));
     card.append(textElement("div", vehicle.scheduled ? "По расписанию" : "Контекстное ТС", "muted"));
+    card.append(textElement("div", `Скорость: ${speedText(vehicle.speed)}`));
     if (vehicle.position_stale) card.append(textElement("div", "Показана последняя известная позиция", "muted"));
     if (vehicle.forecast) {
         const forecast = vehicle.forecast;
@@ -118,6 +120,7 @@ function initializeMap() {
             const content = document.createElement("div");
             content.append(textElement("strong", properties.label || "ТС"));
             content.append(textElement("div", properties.description || ""));
+            content.append(textElement("div", properties.speed || ""));
             new window.maplibregl.Popup().setLngLat(event.lngLat).setDOMContent(content).addTo(map);
         });
         map.on("mouseenter", "vehicles-layer", () => { map.getCanvas().style.cursor = "pointer"; });
@@ -150,6 +153,7 @@ function vehicleFeature(vehicle, color) {
             label: vehicle.tr_id || vehicle.unit_id || "ТС",
             scheduled: Boolean(vehicle.scheduled),
             color,
+            speed: `Скорость: ${speedText(vehicle.speed)}`,
             description: `${vehicle.scheduled ? "По расписанию" : "Контекстное ТС"}${
                 vehicle.position_stale ? " · последняя известная позиция" : ""
             }`,
@@ -165,6 +169,7 @@ function incidentFeature(incident) {
         properties: {
             label: `${incident.tr_id || "ТС"} — инцидент`,
             color: colors[risk(incident.risk)],
+            speed: `Скорость: ${speedText(incident.speed)}`,
             description: `Риск ${probabilityText(incident.delay_probability)} · ${
                 incident.reason || "предупреждающий сигнал"
             }`,
@@ -243,6 +248,7 @@ async function refresh() {
             card.append(textElement("div",
                 `Остановка ${incident.target_stop_id || "—"} · сегмент ${incident.problem_segment?.segment_index ?? "—"}`,
                 "muted"));
+            card.append(textElement("div", `Скорость: ${speedText(incident.speed)}`, "muted"));
             card.append(textElement("div", incident.recommendation || "", "muted"));
             card.append(textElement("div", incident.updated_at || incident.measured_at || "", "muted"));
             if (finite(incident.position?.lat) && finite(incident.position?.lon)) {
